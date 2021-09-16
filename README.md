@@ -46,6 +46,13 @@ The other option you can use right now, is to build it.
 
 **FYI, after you build and got the binary, you can add the path of your binary into your shell configs like `.bashrc`**
 
+Therefore, add the execution command of brew-updates like:
+
+```
+...
+./Users/yeongyu/workspaces/brew-updates/src
+```
+
 ---
 
 ## Build

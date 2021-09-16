@@ -2,6 +2,7 @@ package utils
 
 import (
 	"os/exec"
+	"runtime"
 	"strings"
 )
 
@@ -11,4 +12,8 @@ func ExecuteCommand(command string) string {
 	c.Stdout = b
 	c.Run()
 	return b.String()
+}
+
+func IsMacOS() bool {
+	return runtime.GOOS == "darwin"
 }

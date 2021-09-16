@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/code-yeongyu/brew-updates/master/docs/images/logo.png" alt="BrewUpdates">
 </p>
 <p align="center">
-    <em>Get Brew Packages to update, just like you've experienced from Ubuntu</em>
+    <em>Get the number of Brew Packages to update, just like you've experienced from Ubuntu</em>
 </p>
 
 ---

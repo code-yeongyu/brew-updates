@@ -25,7 +25,8 @@ The key features are:
 When you open terminal in ubuntu, you can see the following:
 ![SSH-connected ubuntu screenshot](docs/images/ubuntu-execution.png)
 
-When you installed BrewUpdates, you can see the following:
+When you have installed BrewUpdates, you can see the following:
+![demo](docs/images/execution.png)
 
 You can do the similar thing with the `brew update; brew upgrade` command, which takes a few seconds.
 
@@ -35,8 +36,55 @@ With the BrewUpdates, your update history will be recorded locally so you don't 
 
 ## Installation
 
+I have plan to upload this project to the brew, so that you can download easily.
+
+However, still I got some works to do, so currently it's not supported to install automatically using brew.
+
+The other option you can use right now, is to build it.
+
+**FYI, after you build and got the binary, you can add the path of your binary into your shell configs like `.bashrc`**
+
 ---
 
 ## Build
+
+Follow the below instructions sequentially. Let's start with the installing `brew` and `go`. You can skip installing it if you already have it.
+
+### Install brew
+
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+### Install go
+
+```sh
+brew install go
+```
+
+### Clone this repository
+
+```sh
+git clone git@github.com:code-yeongyu/brew-updates.git
+```
+
+### Install dependencies
+
+```sh
+cd src/
+go mod tidy
+```
+
+### Compile
+
+```sh
+go build .
+```
+
+### Run!
+
+```sh
+./brew-updates
+```
 
 ---

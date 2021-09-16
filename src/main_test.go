@@ -1,9 +1,16 @@
 package main
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestTrue(t *testing.T) {
-	if false {
-		t.Error("Wrong result")
-	}
+	assert.True(t, true)
+}
+
+func TestExecuteCommand(t *testing.T) {
+	result := ExecuteCommand("echo hello")
+	assert.Equal(t, "hello\n", result)
 }

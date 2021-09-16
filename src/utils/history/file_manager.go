@@ -1,9 +1,9 @@
 package history
 
 import (
+	"brew-updates/utils"
 	"fmt"
 	"io/ioutil"
-	"os/exec"
 )
 
 type HistoryFileManager struct {
@@ -16,7 +16,7 @@ func GetHistoryFileManager() HistoryFileManager {
 
 func (history HistoryFileManager) UpdateHistory() {
 	command := fmt.Sprintf("history --show-time > %s", history.FILE_PATH)
-	exec.Command(command).Run()
+	utils.ExecuteCommand(command)
 }
 
 func (history HistoryFileManager) GetHistory() (string, error) {

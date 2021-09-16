@@ -1,51 +1,65 @@
 package main
 
 import (
+	"brew-updates/utils"
+	"brew-updates/utils/brew"
+	"brew-updates/utils/history"
 	"fmt"
-	"os/exec"
-	"strings"
 )
 
-func ExecuteCommand(command string) string {
-	splittedCommand := strings.Split(command, " ")
-	c, b := exec.Command(splittedCommand[0], splittedCommand[1:]...), new(strings.Builder)
-	c.Stdout = b
-	c.Run()
-	return b.String()
-}
-
-type BrewManager struct {
-}
-
-func (b BrewManager) IsInstalled() bool {
-	result := ExecuteCommand("brew --version")
-	return result != ""
-}
-
-func (b BrewManager) UpdateInfo() {
-	ExecuteCommand("brew update")
-}
-
-func (b BrewManager) GetUpgradablePackages() []string {
-	outdatedPackagesString := ExecuteCommand("brew outdated")
-	if outdatedPackagesString == "" {
-		return []string{}
+func checkExecutable(brewManager brew.BrewManager) {
+	if !utils.IsMacOS() {
+		panic("Only macOS is supported.")
 	}
-	outdatedPackages := strings.Split(outdatedPackagesString, "\n")
-	return outdatedPackages
+	if !brewManager.IsInstalled() {
+		panic("Brew is not installed.")
+	}
+}
+
+func getRecordedBrewUpgradeCount() int {
+	countFileManager := history.GetCountFileManager()
+	recordedBrewUpgradeCount, _ := countFileManager.GetCount()
+	return recordedBrewUpgradeCount
+}
+
+func getCurrentBrewUpgradeCount() int {
+	historyFileManager := history.GetHistoryFileManager()
+	historyFileManager.UpdateHistory()
+	commandHistory, _ := historyFileManager.GetHistory()
+	return history.CountBrewUpgrade(commandHistory)
+}
+
+func isBrewUpgradeCountHasDiffer(currentBrewUpgradeCount int) bool {
+	recordedBrewUpgradeCount := getRecordedBrewUpgradeCount()
+	return recordedBrewUpgradeCount != currentBrewUpgradeCount
+}
+
+func getUpgradablePackagesCount(brewManager brew.BrewManager) int {
+	brewManager.UpdateInfo()
+	upgradablePackages := brewManager.GetUpgradablePackages()
+	return len(upgradablePackages)
 }
 
 func main() {
-	brew := BrewManager{}
+	brewManager := brew.BrewManager{}
+	checkExecutable(brewManager)
 
-	if !brew.IsInstalled() {
-		fmt.Println("Brew is not installed.")
-		return
+	currentBrewUpgradeCount := getCurrentBrewUpgradeCount()
+	updatablePackageCacheManager := brew.GetUpdatablePackagesCacheManager()
+
+	if isBrewUpgradeCountHasDiffer(currentBrewUpgradeCount) {
+		historyCountManager := history.GetCountFileManager()
+		if err := historyCountManager.SaveCount(currentBrewUpgradeCount); err != nil {
+			panic(err)
+		}
+
+		upgradablePackagesCount := getUpgradablePackagesCount(brewManager)
+		if err := updatablePackageCacheManager.SaveCount(upgradablePackagesCount); err != nil {
+			panic(err)
+		}
 	}
 
-	brew.UpdateInfo()
-	upgradablePackages := brew.GetUpgradablePackages()
-	upgradablePackagesCnt := len(upgradablePackages)
+	upgradablePackagesCnt, _ := updatablePackageCacheManager.GetCount()
 
 	fmt.Printf("%d updates can be applied immediately.", upgradablePackagesCnt)
 	if upgradablePackagesCnt > 10 {

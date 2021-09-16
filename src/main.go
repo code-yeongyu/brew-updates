@@ -61,7 +61,7 @@ func main() {
 
 	upgradablePackagesCnt, _ := updatablePackageCacheManager.GetCount()
 
-	fmt.Printf("%d updates can be applied immediately.", upgradablePackagesCnt)
+	fmt.Printf("%d updates can be applied immediately.\n", upgradablePackagesCnt)
 	if upgradablePackagesCnt > 10 {
 		fmt.Printf(
 			"To see these additional updates run: brew outdated\nTo upgrade all of your outdated packages run: brew upgrade",

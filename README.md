@@ -13,7 +13,9 @@ _This project is currently in progress, so the following features cannot work as
 
 The key features are:
 
-- Fast: Caching the packages to update in the background
+- Fast: Caching the packages to update
+  - The execution time of `brew update; brew outdated`: `7.42 seconds`
+  - The execution best time of `brew-updates` (cached): `271.91 millis` - **approximately 27x faster**
 - Easy: Simply downloadable using brew
 - Easy to setup: Just by specifying what shell you use, the setup can be done
 - Friendly: The apt-like notifications from brew

@@ -36,5 +36,21 @@ func (b BrewManager) GetUpgradablePackages() []string {
 }
 
 func main() {
+	brew := BrewManager{}
 
+	if !brew.IsInstalled() {
+		fmt.Println("Brew is not installed.")
+		return
+	}
+
+	brew.UpdateInfo()
+	upgradablePackages := brew.GetUpgradablePackages()
+	upgradablePackagesCnt := len(upgradablePackages)
+
+	fmt.Printf("%d updates can be applied immediately.", upgradablePackagesCnt)
+	if upgradablePackagesCnt > 10 {
+		fmt.Printf(
+			"To see these additional updates run: brew outdated\nTo upgrade all of your outdated packages run: brew upgrade",
+		)
+	}
 }

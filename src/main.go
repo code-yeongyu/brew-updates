@@ -3,7 +3,6 @@ package main
 import (
 	"brew-updates/utils"
 	"brew-updates/utils/brew"
-	"brew-updates/utils/history"
 	"fmt"
 )
 
@@ -16,24 +15,6 @@ func checkExecutable(brewManager brew.BrewManager) {
 	}
 }
 
-func getRecordedBrewUpgradeCount() int {
-	countFileManager := history.GetCountFileManager()
-	recordedBrewUpgradeCount, _ := countFileManager.GetCount()
-	return recordedBrewUpgradeCount
-}
-
-func getCurrentBrewUpgradeCount() int {
-	historyFileManager := history.GetHistoryFileManager()
-	historyFileManager.UpdateHistory()
-	commandHistory, _ := historyFileManager.GetHistory()
-	return history.CountBrewUpgrade(commandHistory)
-}
-
-func isBrewUpgradeCountHasDiffer(currentBrewUpgradeCount int) bool {
-	recordedBrewUpgradeCount := getRecordedBrewUpgradeCount()
-	return recordedBrewUpgradeCount != currentBrewUpgradeCount
-}
-
 func getUpgradablePackagesCount(brewManager brew.BrewManager) int {
 	brewManager.UpdateInfo()
 	upgradablePackages := brewManager.GetUpgradablePackages()
@@ -43,23 +24,7 @@ func getUpgradablePackagesCount(brewManager brew.BrewManager) int {
 func main() {
 	brewManager := brew.BrewManager{}
 	checkExecutable(brewManager)
-
-	currentBrewUpgradeCount := getCurrentBrewUpgradeCount()
-	updatablePackageCacheManager := brew.GetUpdatablePackagesCacheManager()
-
-	if isBrewUpgradeCountHasDiffer(currentBrewUpgradeCount) {
-		historyCountManager := history.GetCountFileManager()
-		if err := historyCountManager.SaveCount(currentBrewUpgradeCount); err != nil {
-			panic(err)
-		}
-
-		upgradablePackagesCount := getUpgradablePackagesCount(brewManager)
-		if err := updatablePackageCacheManager.SaveCount(upgradablePackagesCount); err != nil {
-			panic(err)
-		}
-	}
-
-	upgradablePackagesCnt, _ := updatablePackageCacheManager.GetCount()
+	upgradablePackagesCnt := getUpgradablePackagesCount(brewManager)
 
 	fmt.Printf("%d updates can be applied immediately.\n", upgradablePackagesCnt)
 	if upgradablePackagesCnt > 10 {

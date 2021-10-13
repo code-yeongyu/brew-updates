@@ -17,7 +17,7 @@ func checkExecutable(brewManager brew.BrewManager) {
 
 func getUpgradablePackagesCount(brewManager brew.BrewManager) int {
 	brewManager.UpdateInfo()
-	upgradablePackages := brewManager.GetUpgradablePackages()
+	upgradablePackages := brewManager.GetCurrentUpgradablePackages()
 	return len(upgradablePackages)
 }
 

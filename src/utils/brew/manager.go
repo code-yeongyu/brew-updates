@@ -17,7 +17,7 @@ func (b BrewManager) UpdateInfo() {
 	utils.ExecuteCommand("brew update")
 }
 
-func (b BrewManager) GetUpgradablePackages() []string {
+func (b BrewManager) GetCurrentUpgradablePackages() []string {
 	outdatedPackagesString := utils.ExecuteCommand("brew outdated")
 	if outdatedPackagesString == "" {
 		return []string{}

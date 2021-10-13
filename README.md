@@ -84,10 +84,11 @@ cd src/
 go mod tidy
 ```
 
-### Compile
+### Compile & Install
 
 ```sh
-go build .
+CGO_ENABLED=0 go build -a -o bin/brew-updates main.go; \
+mv bin/brew-updates /usr/local/bin
 ```
 
 ### Run!

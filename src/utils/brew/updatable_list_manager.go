@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strings"
 	"sync"
 	"time"
 )
@@ -38,6 +39,14 @@ func (manager *UpdatableListManager) Save() error {
 		return err
 	}
 
+	splitted_path := strings.Split(manager.FILE_PATH, "/")
+	splitted_path = splitted_path[:len(splitted_path)-1]
+	directory_path := strings.Join(splitted_path, "/")
+
+	err = os.MkdirAll(directory_path, 0700)
+	if err != nil {
+		return err
+	}
 	err = ioutil.WriteFile(manager.FILE_PATH, jsonString, 0644)
 	if err != nil {
 		return err

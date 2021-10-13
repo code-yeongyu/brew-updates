@@ -29,7 +29,10 @@ func (b BrewManager) GetCurrentUpgradablePackages() []string {
 func refreshUpdatableListManager(b BrewManager, updatableListManager *UpdatableListManager) {
 	b.UpdateInfo()
 	updatableListManager.Packages = b.GetCurrentUpgradablePackages()
-	updatableListManager.Save()
+
+	if err := updatableListManager.Save(); err != nil {
+		panic(err)
+	}
 }
 
 func (b BrewManager) GetUpgradablePackages() []string {

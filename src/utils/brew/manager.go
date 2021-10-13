@@ -25,3 +25,27 @@ func (b BrewManager) GetCurrentUpgradablePackages() []string {
 	outdatedPackages := strings.Split(outdatedPackagesString, "\n")
 	return outdatedPackages
 }
+
+func refreshUpdatableListManager(b BrewManager, updatableListManager *UpdatableListManager) {
+	b.UpdateInfo()
+	updatableListManager.Packages = b.GetCurrentUpgradablePackages()
+	updatableListManager.Save()
+}
+
+func (b BrewManager) GetUpgradablePackages() []string {
+	updatableListManager := GetUpdatableListManager()
+
+	// load the cached packages, or create a new one if it doesn't exist
+	if err := updatableListManager.Load(); err != nil {
+		refreshUpdatableListManager(b, updatableListManager)
+		if err := updatableListManager.Load(); err != nil {
+			panic(err)
+		}
+	}
+
+	if !updatableListManager.IsAvailable() {
+		refreshUpdatableListManager(b, updatableListManager)
+	}
+
+	return updatableListManager.Packages
+}

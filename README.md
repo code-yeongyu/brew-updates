@@ -38,20 +38,13 @@ With the BrewUpdates, your update history will be recorded locally so you don't 
 
 ## Installation
 
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/code-yeongyu/brew-updates/master/install/install.sh)"
+```
+
 I have plan to upload this project to the brew, so that you can download easily.
 
 However, still I got some works to do, so currently it's not supported to install automatically using brew.
-
-The other option you can use right now, is to build it.
-
-**FYI, after you build and got the binary, you can add the path of your binary into your shell configs like `.bashrc`**
-
-Therefore, add the execution command of brew-updates like:
-
-```
-...
-./Users/yeongyu/workspaces/brew-updates/src
-```
 
 ---
 

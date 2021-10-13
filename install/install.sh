@@ -9,8 +9,10 @@ cd brew-updates/src/
 go mod tidy
 
 echo "Build and Install BrewUpdates"
-CGO_ENABLED=0 go build -a -o bin/brew-updates main.go; \
+CGO_ENABLED=0 go build -a -o bin/brew-updates main.go
 mv bin/brew-updates /usr/local/bin
+cd ../..
+rm -rf brew-updates
 
 echo "Done!"
 echo "You can now easily check your upgradable packages using 'brew-updates'"

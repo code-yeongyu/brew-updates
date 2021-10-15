@@ -2,15 +2,16 @@ echo "Install golang"
 brew install go
 
 echo "Download source code"
-git clone git@github.com:code-yeongyu/brew-updates.git
+git clone https://github.com/code-yeongyu/brew-updates --branch master
 
 echo "Install go dependency modules"
 cd brew-updates/src/
 go mod tidy
 
-echo "Build and Install BrewUpdates"
+echo "Build BrewUpdates"
 CGO_ENABLED=0 go build -a -o bin/brew-updates main.go
-mv bin/brew-updates /usr/local/bin
+echo "Install BrewUpdates"
+sudo mv bin/brew-updates /usr/local/bin
 cd ../..
 rm -rf brew-updates
 

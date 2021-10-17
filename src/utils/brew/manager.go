@@ -23,6 +23,8 @@ func (b BrewManager) GetCurrentUpgradablePackages() []string {
 		return []string{}
 	}
 	outdatedPackages := strings.Split(outdatedPackagesString, "\n")
+	outdatedPackages = outdatedPackages[:len(outdatedPackages)-1] // remove last empty string
+
 	return outdatedPackages
 }
 

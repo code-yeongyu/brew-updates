@@ -15,6 +15,17 @@ sudo mv bin/brew-updates /usr/local/bin
 cd ../..
 rm -rf brew-updates
 
+echo "Registering `brew-updates` to your shell config ..."
+if [[ $SHELL == *"bash"* ]];then
+    echo "bash" >> ~/.bashrc
+elif [[ $SHELL == *"zsh"* ]];then
+    echo "brew-updates" >> ~/.zshrc
+elif [[ $SHELL == *"fish"* ]];then
+    echo "brew-updates" >> ~/.config/fish/config.fish
+else
+    echo "Cannot detect the shell you use."
+    echo "You can manually add `brew-updates` into your shell config."
+fi
+
 echo "Done!"
 echo "You can now easily check your upgradable packages using 'brew-updates'"
-echo "I recommend you to add 'brew-updates' on your shell config like .bashrc to get notification everytime you open the terminal."
